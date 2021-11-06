@@ -133,6 +133,103 @@ public class LinkedList
         }
     }
 
+    public boolean isElementPresent(int a)
+    {
+        boolean isPresent = false;
+        SinglyLinkedListNode temp = head;
+        while (temp != null && !isPresent)
+        {
+            isPresent = temp.getData() == a;
+            temp = temp.getNext();
+        }
+        return isPresent;
+    }
+
+    public void reverseLinkedList()
+    {
+        if(head==null)
+        {
+            return;
+        }
+        SinglyLinkedListNode previous = null;
+        SinglyLinkedListNode current = head;
+        while(head!=null)
+        {
+            head =head.getNext();
+            current.setNext(previous);
+            previous=current;
+            current=head;
+        }
+        head=previous;
+    }
+
+    public SinglyLinkedListNode findMiddle()
+    {
+        if(head==null)
+        {
+            return null;
+        }
+        SinglyLinkedListNode slwPtr = head;
+        SinglyLinkedListNode fstPtr = head;
+        while(fstPtr!=null && fstPtr.getNext()!=null)
+        {
+            slwPtr = slwPtr.getNext();
+            fstPtr = fstPtr.getNext().getNext();
+        }
+        return slwPtr;
+    }
+
+    public SinglyLinkedListNode getNthNodeFromEnd(int position)
+    {
+        if(head==null)
+        {
+            return null;
+        }
+        int length = 0;
+        SinglyLinkedListNode slwPtr = head;
+        SinglyLinkedListNode fstPtr = head;
+        while(fstPtr!=null && fstPtr.getNext()!=null)
+        {
+            length++;
+            slwPtr = slwPtr.getNext();
+            fstPtr = fstPtr.getNext().getNext();
+        }
+        int distToConver = 0;
+        if(fstPtr == null)
+        {
+            distToConver  = length-position;
+        }
+        else
+        {
+            distToConver  = length+1-position;
+        }
+        for(int i=0;i<distToConver;i++)
+        {
+            slwPtr = slwPtr.getNext();
+        }
+        return slwPtr;
+    }
+
+    // For a sorted linked list
+    public void removeDuplicates()
+    {
+        SinglyLinkedListNode current = head;
+        SinglyLinkedListNode temp = current;
+        while (temp.getNext() != null)
+        {
+            if(temp.getData() == temp.getNext().getData())
+            {
+                temp = temp.getNext();
+            }
+            else
+            {
+                current.setNext(temp.getNext());
+                current = current.getNext();
+                temp = temp.getNext();
+            }
+        }
+    }
+
     public static void main(String[] args)
     {
         LinkedList linkedList = new LinkedList();
@@ -157,6 +254,20 @@ public class LinkedList
         linkedList.printList();
         System.out.println("Delete 3rd node");
         linkedList.deleteNodeAtPosition(3);
+        linkedList.printList();
+        System.out.println("Is element 3 present? "+linkedList.isElementPresent(3));
+        linkedList.reverseLinkedList();
+        linkedList.printList();
+        System.out.println("Middle element of the LinkedList: "+linkedList.findMiddle().getData());
+        linkedList.insertNodeAtPosition(2, new SinglyLinkedListNode(3));
+        linkedList.insertNodeAtFirst(new SinglyLinkedListNode(5));
+        linkedList.insertNodeAtFirst(new SinglyLinkedListNode(6));
+        linkedList.printList();
+        System.out.println("3rd node from the end of the LinkedList: "+linkedList.getNthNodeFromEnd(3).getData());
+        linkedList.insertNodeAtFirst(new SinglyLinkedListNode(6));
+        linkedList.insertNodeAtFirst(new SinglyLinkedListNode(6));
+        linkedList.printList();
+        linkedList.removeDuplicates();
         linkedList.printList();
     }
 }
